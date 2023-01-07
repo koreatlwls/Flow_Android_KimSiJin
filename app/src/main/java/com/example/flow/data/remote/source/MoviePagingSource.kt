@@ -18,8 +18,9 @@ class MoviePagingSource(
             PAGE_MAX_SIZE,
             page
         ).onSuccess { movieResponse ->
+            val total = movieResponse.total
             val prevKey = if (page == STARTING_PAGE_INDEX) null else page.minus(PAGE_MAX_SIZE)
-            val nextKey = if (movieResponse.items.isEmpty()) null else page.plus(PAGE_MAX_SIZE)
+            val nextKey = if (movieResponse.items.isEmpty() || total - 10 < page) null else page.plus(PAGE_MAX_SIZE)
 
             val movies = movieResponse.items.map { it.toMovie() }
 
