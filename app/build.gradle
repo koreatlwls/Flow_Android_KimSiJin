@@ -6,6 +6,9 @@ plugins {
     id 'com.google.dagger.hilt.android'
 }
 
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
 android {
     namespace 'com.example.flow'
     compileSdk 32
@@ -18,6 +21,10 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "NAVER_CLIENT_ID", properties['NAVER_CLIENT_ID']
+        buildConfigField "String", "NAVER_CLIENT_SECRET", properties['NAVER_CLIENT_SECRET']
+        buildConfigField "String", "BACK_URL", properties['BACK_URL']
     }
 
     buildTypes {
