@@ -2,6 +2,8 @@ package com.example.flow.di
 
 import com.example.flow.data.repository.MovieRepository
 import com.example.flow.data.repository.MovieRepositoryImpl
+import com.example.flow.data.repository.SearchRecordRepository
+import com.example.flow.data.repository.SearchRecordRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -17,5 +19,11 @@ interface RepositoryModule {
     fun provideMovieRepository(
         movieRepositoryImpl: MovieRepositoryImpl
     ): MovieRepository
+
+    @Binds
+    @Singleton
+    fun provideSearchRecordRepository(
+        searchRecordRepositoryImpl: SearchRecordRepositoryImpl
+    ): SearchRecordRepository
 
 }

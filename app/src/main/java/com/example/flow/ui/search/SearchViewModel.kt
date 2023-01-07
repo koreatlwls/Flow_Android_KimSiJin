@@ -5,7 +5,9 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.flow.data.repository.MovieRepository
+import com.example.flow.data.repository.SearchRecordRepository
 import com.example.flow.model.Movie
+import com.example.flow.model.SearchRecord
 import com.example.flow.util.MutableEventFlow
 import com.example.flow.util.asEventFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +19,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val movieRepository: MovieRepository
+    private val movieRepository: MovieRepository,
+    private val searchRecordRepository: SearchRecordRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<UiState>(UiState.Error)
@@ -36,6 +39,7 @@ class SearchViewModel @Inject constructor(
         viewModelScope.launch {
             _query.emit(input)
             currentQuery = input
+            searchRecordRepository.insertSearchRecord(SearchRecord(input))
         }
     }
 
