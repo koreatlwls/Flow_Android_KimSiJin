@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Flow</string>
+    <string name="recent_search_text">최근검색</string>
+    <string name="movie_title_input_hint">영화 제목을 입력하세요.</string>
+    <string name="go_to_recent_search_text">최근검색 기록 보러가기</string>
+    <string name="empty_search_result_text">검색 결과가 없습니다.</string>
 </resources>
