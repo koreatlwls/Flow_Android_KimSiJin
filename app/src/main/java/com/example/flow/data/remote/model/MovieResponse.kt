@@ -1,4 +1,4 @@
-package com.example.flow.model
+package com.example.flow.data.remote.model
 
 import com.squareup.moshi.JsonClass
 
