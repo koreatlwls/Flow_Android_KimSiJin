@@ -6,6 +6,6 @@
 
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.example.flow.SearchFragment"
+        android:name="com.example.flow.ui.search.SearchFragment"
         android:label="SearchFragment" />
 </navigation>

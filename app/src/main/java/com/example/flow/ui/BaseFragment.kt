@@ -1,4 +1,4 @@
-package com.example.flow
+package com.example.flow.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
