@@ -3,15 +3,16 @@ package com.example.flow.ui.search
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.flow.R
 import com.example.flow.databinding.FragmentSearchBinding
 import com.example.flow.ui.BaseFragment
+import com.example.flow.util.repeatOnStarted
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_search) {
@@ -24,17 +25,16 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
         super.onViewCreated(view, savedInstanceState)
 
         initAdapter()
-        searchViewModel.getMovies("Iron Man")
-        lifecycleScope.launch{
-            searchViewModel.movieResponse.collectLatest {
-                searchPagingAdapter.submitData(it)
-            }
-        }
+        listenSearchView()
+        listenLoadState()
+        observeQuery()
+        observeMovieResponse()
 
     }
 
     override fun initBinding() {
         binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = searchViewModel
     }
 
     private fun initAdapter() {
@@ -44,6 +44,53 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
 
         binding.recyclerViewSearchResult.adapter = searchPagingAdapter
         binding.recyclerViewSearchResult.layoutManager = LinearLayoutManager(requireContext())
+    }
+
+    private fun listenSearchView() {
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                query?.let {
+                    if (it.isNotBlank()) {
+                        searchViewModel.setQuery(it)
+                    }
+                }
+
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean = false
+
+        })
+    }
+
+    private fun listenLoadState() {
+        searchPagingAdapter.addLoadStateListener {
+            when (it.source.refresh) {
+                is LoadState.Loading -> searchViewModel.setLoadingState()
+                is LoadState.NotLoading -> searchViewModel.setSuccessState()
+                is LoadState.Error -> searchViewModel.setErrorState()
+            }
+
+            if (it.source.refresh is LoadState.NotLoading && it.append.endOfPaginationReached && searchPagingAdapter.itemCount < 1) {
+                searchViewModel.setEmptyState()
+            }
+        }
+    }
+
+    private fun observeQuery() {
+        repeatOnStarted {
+            searchViewModel.query.collectLatest {
+                searchViewModel.getMovies(it)
+            }
+        }
+    }
+
+    private fun observeMovieResponse() {
+        repeatOnStarted {
+            searchViewModel.movieResponse.collectLatest {
+                searchPagingAdapter.submitData(it)
+            }
+        }
     }
 
 }

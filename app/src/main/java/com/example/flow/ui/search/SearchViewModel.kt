@@ -6,6 +6,8 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.flow.data.repository.MovieRepository
 import com.example.flow.model.Movie
+import com.example.flow.util.MutableEventFlow
+import com.example.flow.util.asEventFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,8 +20,22 @@ class SearchViewModel @Inject constructor(
     private val movieRepository: MovieRepository
 ) : ViewModel() {
 
+    private val _uiState = MutableStateFlow<UiState>(UiState.Empty)
+    val uiState: StateFlow<UiState>
+        get() = _uiState
+
+    private val _query = MutableEventFlow<String>()
+    val query = _query.asEventFlow()
+
     private val _movieResponse = MutableStateFlow<PagingData<Movie>>(PagingData.empty())
-    val movieResponse: StateFlow<PagingData<Movie>> = _movieResponse
+    val movieResponse: StateFlow<PagingData<Movie>>
+        get() = _movieResponse
+
+    fun setQuery(input: String) {
+        viewModelScope.launch {
+            _query.emit(input)
+        }
+    }
 
     fun getMovies(query: String) {
         viewModelScope.launch {
@@ -31,4 +47,27 @@ class SearchViewModel @Inject constructor(
         }
     }
 
+    fun setLoadingState() {
+        _uiState.value = UiState.Loading
+    }
+
+    fun setSuccessState() {
+        _uiState.value = UiState.Success
+    }
+
+    fun setErrorState() {
+        _uiState.value = UiState.Error
+    }
+
+    fun setEmptyState() {
+        _uiState.value = UiState.Empty
+    }
+
+}
+
+sealed class UiState {
+    object Loading : UiState()
+    object Empty : UiState()
+    object Success : UiState()
+    object Error : UiState()
 }
