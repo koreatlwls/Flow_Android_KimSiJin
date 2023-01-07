@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.flow.R
@@ -35,6 +36,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
     override fun initBinding() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = searchViewModel
+        binding.fragment = this
     }
 
     private fun initAdapter() {
@@ -92,6 +94,10 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
                 searchPagingAdapter.submitData(it)
             }
         }
+    }
+
+    fun moveToSearchRecord() {
+        binding.root.findNavController().navigate(R.id.action_searchFragment_to_searchRecordFragment)
     }
 
 }

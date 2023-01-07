@@ -8,6 +8,10 @@
             name="viewModel"
             type="com.example.flow.ui.search.SearchViewModel" />
 
+        <variable
+            name="fragment"
+            type="com.example.flow.ui.search.SearchFragment" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -46,6 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawablePadding="4dp"
+            android:onClick="@{() -> fragment.moveToSearchRecord()}"
             android:padding="12dp"
             android:text="@string/go_to_recent_search_text"
             android:textColor="@color/black"
