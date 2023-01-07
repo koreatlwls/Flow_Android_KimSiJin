@@ -37,9 +37,11 @@ class SearchViewModel @Inject constructor(
 
     fun setQuery(input: String) {
         viewModelScope.launch {
-            _query.emit(input)
-            currentQuery = input
-            searchRecordRepository.insertSearchRecord(SearchRecord(input))
+            if (currentQuery != input) {
+                _query.emit(input)
+                currentQuery = input
+                searchRecordRepository.insertSearchRecord(SearchRecord(input))
+            }
         }
     }
 

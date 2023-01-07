@@ -52,6 +52,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
                 query?.let {
                     if (it.isNotBlank()) {
                         searchViewModel.setQuery(it)
+                        binding.searchView.clearFocus()
                     }
                 }
 
