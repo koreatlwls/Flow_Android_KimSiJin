@@ -1,6 +1,6 @@
 package com.example.flow.data.remote.network
 
-import com.example.flow.model.MovieResponse
+import com.example.flow.data.remote.model.MovieResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
