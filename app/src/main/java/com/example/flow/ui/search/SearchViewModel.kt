@@ -20,12 +20,13 @@ class SearchViewModel @Inject constructor(
     private val movieRepository: MovieRepository
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<UiState>(UiState.Empty)
+    private val _uiState = MutableStateFlow<UiState>(UiState.Error)
     val uiState: StateFlow<UiState>
         get() = _uiState
 
     private val _query = MutableEventFlow<String>()
     val query = _query.asEventFlow()
+    private var currentQuery = ""
 
     private val _movieResponse = MutableStateFlow<PagingData<Movie>>(PagingData.empty())
     val movieResponse: StateFlow<PagingData<Movie>>
@@ -34,12 +35,23 @@ class SearchViewModel @Inject constructor(
     fun setQuery(input: String) {
         viewModelScope.launch {
             _query.emit(input)
+            currentQuery = input
         }
     }
 
     fun getMovies(query: String) {
         viewModelScope.launch {
             movieRepository.getMovies(query)
+                .cachedIn(viewModelScope)
+                .collectLatest {
+                    _movieResponse.value = it
+                }
+        }
+    }
+
+    fun retryGetMovies() {
+        viewModelScope.launch {
+            movieRepository.getMovies(currentQuery)
                 .cachedIn(viewModelScope)
                 .collectLatest {
                     _movieResponse.value = it
