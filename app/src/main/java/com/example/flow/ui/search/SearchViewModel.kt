@@ -11,9 +11,7 @@ import com.example.flow.model.SearchRecord
 import com.example.flow.util.MutableEventFlow
 import com.example.flow.util.asEventFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -34,6 +32,12 @@ class SearchViewModel @Inject constructor(
     private val _movieResponse = MutableStateFlow<PagingData<Movie>>(PagingData.empty())
     val movieResponse: StateFlow<PagingData<Movie>>
         get() = _movieResponse
+
+    val searchRecords: StateFlow<List<SearchRecord>> = searchRecordRepository.getAllSearchRecords().stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(),
+        initialValue = emptyList()
+    )
 
     fun setQuery(input: String) {
         viewModelScope.launch {
