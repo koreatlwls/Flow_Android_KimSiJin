@@ -11,9 +11,20 @@
         <action
             android:id="@+id/action_searchFragment_to_searchRecordFragment"
             app:destination="@id/searchRecordFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_webViewFragment"
+            app:destination="@id/webViewFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchRecordFragment"
         android:name="com.example.flow.ui.searchrecord.SearchRecordFragment"
         android:label="SearchRecordFragment" />
+    <fragment
+        android:id="@+id/webViewFragment"
+        android:name="com.example.flow.ui.webview.WebViewFragment"
+        android:label="WebViewFragment" >
+        <argument
+            android:name="movieUrl"
+            app:argType="string" />
+    </fragment>
 </navigation>
