@@ -17,4 +17,8 @@ class SearchRecordRepositoryImpl @Inject constructor(
         return searchRecordLocalDataSource.getAllSearchRecords()
     }
 
+    override suspend fun deleteAllSearchRecords() {
+        searchRecordLocalDataSource.deleteAllSearchRecords()
+    }
+
 }

@@ -16,4 +16,7 @@ interface SearchRecordDao {
     @Query("SELECT * FROM SearchRecordEntity ORDER BY id DESC LIMIT 10")
     fun getAllSearchRecords(): Flow<List<SearchRecordEntity>>
 
+    @Query("DELETE FROM SearchRecordEntity")
+    suspend fun deleteAllSearchRecords()
+
 }

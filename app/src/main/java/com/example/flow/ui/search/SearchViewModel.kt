@@ -85,6 +85,12 @@ class SearchViewModel @Inject constructor(
         _uiState.value = UiState.Empty
     }
 
+    fun deleteAllSearchRecords() {
+        viewModelScope.launch {
+            searchRecordRepository.deleteAllSearchRecords()
+        }
+    }
+
 }
 
 sealed class UiState {

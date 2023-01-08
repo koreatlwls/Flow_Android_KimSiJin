@@ -9,4 +9,6 @@ interface SearchRecordRepository {
 
     fun getAllSearchRecords(): Flow<List<SearchRecord>>
 
+    suspend fun deleteAllSearchRecords()
+
 }

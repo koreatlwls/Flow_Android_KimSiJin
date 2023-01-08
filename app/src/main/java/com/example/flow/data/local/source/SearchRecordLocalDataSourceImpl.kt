@@ -22,4 +22,8 @@ class SearchRecordLocalDataSourceImpl @Inject constructor(
         }
     }
 
+    override suspend fun deleteAllSearchRecords() {
+        searchRecordDao.deleteAllSearchRecords()
+    }
+
 }

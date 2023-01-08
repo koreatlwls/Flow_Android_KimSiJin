@@ -9,4 +9,6 @@ interface SearchRecordLocalDataSource {
 
     fun getAllSearchRecords(): Flow<List<SearchRecord>>
 
+    suspend fun deleteAllSearchRecords()
+
 }
