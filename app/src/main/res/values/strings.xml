@@ -7,4 +7,5 @@
     <string name="retry_text">다시시도</string>
     <string name="empty_search_record_text">기록이 없습니다.</string>
     <string name="delete_search_record_text">검색기록 삭제</string>
+    <string name="web_view_text">웹뷰</string>
 </resources>

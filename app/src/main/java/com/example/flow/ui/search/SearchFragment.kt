@@ -1,7 +1,6 @@
 package com.example.flow.ui.search
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
@@ -41,7 +40,8 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
 
     private fun initAdapter() {
         searchPagingAdapter = SearchPagingAdapter {
-            Log.e("ABC", it.toString())
+            val action = SearchFragmentDirections.actionSearchFragmentToWebViewFragment(it.link)
+            binding.root.findNavController().navigate(action)
         }
 
         binding.recyclerViewSearchResult.adapter = searchPagingAdapter
