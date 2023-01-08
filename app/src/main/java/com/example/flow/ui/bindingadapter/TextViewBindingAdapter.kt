@@ -12,3 +12,19 @@ fun TextView.showEmpty(uiState: UiState) {
     else
         View.GONE
 }
+
+@BindingAdapter("isEmptyList")
+fun <T> TextView.isEmptyList(list: List<T>) {
+    visibility = if (list.isEmpty())
+        View.VISIBLE
+    else
+        View.GONE
+}
+
+@BindingAdapter("isNotEmptyList")
+fun <T> TextView.isNotEmptyList(list: List<T>) {
+    visibility = if (list.isEmpty())
+        View.GONE
+    else
+        View.VISIBLE
+}
