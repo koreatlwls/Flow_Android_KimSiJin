@@ -6,6 +6,7 @@ import android.view.View
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.flow.R
 import com.example.flow.databinding.FragmentWebViewBinding
@@ -19,6 +20,10 @@ class WebViewFragment : BaseFragment<FragmentWebViewBinding>(R.layout.fragment_w
         super.onViewCreated(view, savedInstanceState)
 
         initWebView()
+    }
+
+    override fun initBinding() {
+        binding.fragment = this
     }
 
     private fun initWebView() {
@@ -51,6 +56,8 @@ class WebViewFragment : BaseFragment<FragmentWebViewBinding>(R.layout.fragment_w
         }
     }
 
-    override fun initBinding() = Unit
+    fun moveBackFromWebView() {
+        binding.root.findNavController().popBackStack()
+    }
 
 }
