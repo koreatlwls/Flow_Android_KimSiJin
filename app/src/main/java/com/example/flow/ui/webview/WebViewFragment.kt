@@ -15,6 +15,7 @@ import com.example.flow.ui.BaseFragment
 class WebViewFragment : BaseFragment<FragmentWebViewBinding>(R.layout.fragment_web_view) {
 
     private val args: WebViewFragmentArgs by navArgs()
+    private lateinit var webView : WebView
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -27,8 +28,10 @@ class WebViewFragment : BaseFragment<FragmentWebViewBinding>(R.layout.fragment_w
     }
 
     private fun initWebView() {
-        binding.webView.loadUrl(args.movieUrl)
-        binding.webView.webViewClient = object : WebViewClient() {
+        webView = binding.webView
+
+        webView.loadUrl(args.movieUrl)
+        webView.webViewClient = object : WebViewClient() {
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
                 super.onPageStarted(view, url, favicon)
 
@@ -48,7 +51,7 @@ class WebViewFragment : BaseFragment<FragmentWebViewBinding>(R.layout.fragment_w
         }
 
 
-        binding.webView.settings.apply {
+        webView.settings.apply {
             loadWithOverviewMode = true
             useWideViewPort = true
             setSupportZoom(false)
@@ -58,6 +61,13 @@ class WebViewFragment : BaseFragment<FragmentWebViewBinding>(R.layout.fragment_w
 
     fun moveBackFromWebView() {
         binding.root.findNavController().popBackStack()
+    }
+
+    override fun onDestroy() {
+            webView.removeAllViews()
+            webView.destroy()
+
+        super.onDestroy()
     }
 
 }
