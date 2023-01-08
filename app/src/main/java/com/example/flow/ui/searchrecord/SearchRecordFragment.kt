@@ -40,7 +40,7 @@ class SearchRecordFragment : BaseFragment<FragmentSearchRecordBinding>(R.layout.
         binding.recyclerViewSearchRecord.layoutManager = LinearLayoutManager(requireContext())
     }
 
-    fun moveBack() {
+    fun moveBackFromSearchRecord() {
         binding.root.findNavController().popBackStack()
     }
 
