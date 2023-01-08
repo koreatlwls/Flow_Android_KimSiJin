@@ -39,6 +39,9 @@ class SearchViewModel @Inject constructor(
         initialValue = emptyList()
     )
 
+    private val _clickSearchRecord = MutableEventFlow<String>()
+    val clickSearchRecord = _clickSearchRecord.asEventFlow()
+
     fun setQuery(input: String) {
         viewModelScope.launch {
             if (currentQuery != input) {
@@ -88,6 +91,12 @@ class SearchViewModel @Inject constructor(
     fun deleteAllSearchRecords() {
         viewModelScope.launch {
             searchRecordRepository.deleteAllSearchRecords()
+        }
+    }
+
+    fun setClickSearchRecord(input : String){
+        viewModelScope.launch {
+            _clickSearchRecord.emit(input)
         }
     }
 

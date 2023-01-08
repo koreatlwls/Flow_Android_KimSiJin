@@ -3,7 +3,7 @@ package com.example.flow.ui.search
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.SearchView
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.collectLatest
 @AndroidEntryPoint
 class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_search) {
 
-    private val searchViewModel: SearchViewModel by viewModels()
+    private val searchViewModel: SearchViewModel by activityViewModels()
 
     private lateinit var searchPagingAdapter: SearchPagingAdapter
 
@@ -29,6 +29,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
         listenLoadState()
         observeQuery()
         observeMovieResponse()
+        observeClickSearchRecord()
 
     }
 
@@ -92,6 +93,14 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(R.layout.fragment_sea
         repeatOnStarted {
             searchViewModel.movieResponse.collectLatest {
                 searchPagingAdapter.submitData(it)
+            }
+        }
+    }
+
+    private fun observeClickSearchRecord() {
+        repeatOnStarted {
+            searchViewModel.clickSearchRecord.collectLatest {
+                binding.searchView.setQuery(it, true)
             }
         }
     }

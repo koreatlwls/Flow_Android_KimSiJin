@@ -1,9 +1,8 @@
 package com.example.flow.ui.searchrecord
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.flow.R
@@ -15,7 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class SearchRecordFragment : BaseFragment<FragmentSearchRecordBinding>(R.layout.fragment_search_record) {
 
-    private val searchViewModel: SearchViewModel by viewModels()
+    private val searchViewModel: SearchViewModel by activityViewModels()
 
     private lateinit var searchRecordAdapter: SearchRecordAdapter
 
@@ -33,7 +32,8 @@ class SearchRecordFragment : BaseFragment<FragmentSearchRecordBinding>(R.layout.
 
     private fun initAdapter() {
         searchRecordAdapter = SearchRecordAdapter {
-            Log.e("ABC", it)
+            searchViewModel.setClickSearchRecord(it)
+            binding.root.findNavController().popBackStack()
         }
 
         binding.recyclerViewSearchRecord.adapter = searchRecordAdapter
